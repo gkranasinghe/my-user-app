@@ -24,6 +24,7 @@ export default async function HotelsPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">BB</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">HB</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">FB</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PDF</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -38,6 +39,20 @@ export default async function HotelsPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     S: {hotel.fb_single}, D: {hotel.fb_double}, T: {hotel.fb_triple}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {hotel.pdf_url ? (
+                      <a
+                        href={hotel.pdf_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        View PDF
+                      </a>
+                    ) : (
+                      "No PDF"
+                    )}
                   </td>
                 </tr>
               ))}

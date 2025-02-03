@@ -14,34 +14,39 @@ export default function HotelForm() {
   const [bb, setBB] = useState<RateType>({ single: "", double: "", triple: "" })
   const [hb, setHB] = useState<RateType>({ single: "", double: "", triple: "" })
   const [fb, setFB] = useState<RateType>({ single: "", double: "", triple: "" })
+  const [file, setFile] = useState<File | null>(null)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    const formData = new FormData()
+    formData.append("name", name)
+    formData.append("bb_single", bb.single)
+    formData.append("bb_double", bb.double)
+    formData.append("bb_triple", bb.triple)
+    formData.append("hb_single", hb.single)
+    formData.append("hb_double", hb.double)
+    formData.append("hb_triple", hb.triple)
+    formData.append("fb_single", fb.single)
+    formData.append("fb_double", fb.double)
+    formData.append("fb_triple", fb.triple)
+    if (file) {
+      formData.append("file", file)
+    }
+
     const response = await fetch("/api/hotels", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        bb_single: bb.single,
-        bb_double: bb.double,
-        bb_triple: bb.triple,
-        hb_single: hb.single,
-        hb_double: hb.double,
-        hb_triple: hb.triple,
-        fb_single: fb.single,
-        fb_double: fb.double,
-        fb_triple: fb.triple,
-      }),
+      body: formData,
     })
+
     if (response.ok) {
       alert("Hotel data submitted successfully!")
       setName("")
       setBB({ single: "", double: "", triple: "" })
       setHB({ single: "", double: "", triple: "" })
       setFB({ single: "", double: "", triple: "" })
+      setFile(null)
       router.push("/hotels")
     } else {
       alert("Error submitting hotel data")
@@ -99,6 +104,18 @@ export default function HotelForm() {
       <RateInputs type="Bed & Breakfast (BB)" state={bb} setState={setBB} />
       <RateInputs type="Half Board (HB)" state={hb} setState={setHB} />
       <RateInputs type="Full Board (FB)" state={fb} setState={setFB} />
+      <div>
+        <label htmlFor="file" className="block text-sm font-medium text-gray-700">
+          Upload PDF
+        </label>
+        <input
+          type="file"
+          id="file"
+          accept=".pdf"
+          onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+          className="mt-1 block w-full"
+        />
+      </div>
       <button
         type="submit"
         className="w-full px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
