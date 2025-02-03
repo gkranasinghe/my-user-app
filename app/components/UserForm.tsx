@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function UserForm() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,6 +21,7 @@ export default function UserForm() {
       alert("User data submitted successfully!")
       setName("")
       setEmail("")
+      router.push("/users")
     } else {
       alert("Error submitting user data")
     }
